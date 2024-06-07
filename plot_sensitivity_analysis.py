@@ -115,7 +115,7 @@ def plot_over_var(statistics_df, x_var, y_var, logscale=True, save_path=None, xl
         ax.xaxis.set_minor_locator(mticker.MultipleLocator(100))
         if y_var == "avg_runtime":
             bottom, top = plt.ylim()
-            plt.ylim(bottom, 2)
+            plt.ylim(bottom, top + 0.5)
             ax.yaxis.set_minor_locator(mticker.MultipleLocator(0.2))
         if y_var in ["avg_p1", "avg_cp"]:
             ax.yaxis.set_major_locator(mticker.LogLocator(base=10, numticks=8))
@@ -132,7 +132,7 @@ def plot_over_var(statistics_df, x_var, y_var, logscale=True, save_path=None, xl
         if y_var == "avg_runtime":
             bottom, top = plt.ylim()
             distance = top - bottom
-            plt.ylim((0, 0.5))
+            plt.ylim((0, top + 0.5))
             ax.yaxis.set_major_locator(mticker.MultipleLocator(0.2))
             ax.yaxis.set_minor_locator(mticker.MultipleLocator(0.1))
         if y_var in ["avg_p1", "avg_cp"]:
@@ -140,7 +140,7 @@ def plot_over_var(statistics_df, x_var, y_var, logscale=True, save_path=None, xl
 
     if x_var == "n_acts" and y_var == "avg_runtime":
         bottom, top = plt.ylim()
-        plt.ylim((0, 0.8))
+        plt.ylim((0, top + 0.5))
         ax.yaxis.set_major_locator(mticker.MultipleLocator(0.25))
         ax.yaxis.set_minor_locator(mticker.MultipleLocator(0.125))
 
