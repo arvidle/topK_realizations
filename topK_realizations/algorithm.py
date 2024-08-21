@@ -58,6 +58,10 @@ def get_realization_choices(log_realization: LogRealization, uncertain_log: Unce
     return [uncertain_log[event_id][realization_idx] for event_id, (realization_idx, _) in enumerate(log_realization)]
 
 
+def get_choices_from_indices(log_realization: list[RealizationIndex], uncertain_log: UncertainEventLog) -> EventLog:
+    return [uncertain_log[event_id][realization_idx] for event_id, realization_idx in enumerate(log_realization)]
+
+
 def event_realization_probability(choice: Choice) -> Probability:
     return choice[0]
 
@@ -160,3 +164,28 @@ def realization_ranking(uncertain_log: UncertainEventLog, yield_realization: boo
             realization_heap.push(excluded_second_best)
 
     return
+
+
+def realization_ranking_baseline(uncertain_log: UncertainEventLog, yield_realization: bool = False) -> Union[Iterator[Probability, EventLog], Iterator[Probability, EventLog, LogRealization]]:
+    # Calculate all realizations and their probabilities
+    current_realizations = [(0.0, [])]
+    temp_realizations = []
+    for uncertain_event in uncertain_log:
+        for probability, realization in current_realizations:
+            for event_realization_id, (event_probability, _) in enumerate(uncertain_event):
+                next_probability = probability * event_probability
+                next_realization = realization + [event_realization_id]
+                temp_realizations.append((next_probability, next_realization))
+        current_realizations = temp_realizations
+        temp_realizations = []
+
+    # Return an iterator
+    for probability, realization in sorted(current_realizations, key=lambda x: x[0], reverse=True):
+        log = []
+
+        if yield_realization:
+            yield probability, log, realization
+        else:
+            yield probability, log
+
+        return

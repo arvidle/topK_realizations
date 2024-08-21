@@ -6,7 +6,6 @@ from pm4py.objects.petri_net.obj import PetriNet, Marking
 from typing import Any, Sequence
 from math import log, floor
 import scipy.stats as stats
-import matplotlib.pyplot as plt
 import random
 from itertools import accumulate
 from functools import reduce
